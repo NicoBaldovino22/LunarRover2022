@@ -1,0 +1,28 @@
+Hello 2021-22 Lunar Rover Team!
+
+This document is meant as a guide for setting up GitHub on your own laptop and connecting the repository correctly so that all of our code is easily up to date.
+If you have not used GitHub before, it is a website that allows you to store and share coding files (or other files if need be) into a single repository that you can connect
+ to a downloaded file folder on your device. This repository and file folder can be updated to match each others contents by pulling/pushing the updated information/code 
+ using the GitHub Desktop Application that you can download from this repository link as well. I will guide you through the downloading process now:
+
+The following link will take you to the GitHub website where I have created the repository for all of our code:
+https://github.com/NicoBaldovino22/LunarRover2022
+
+Once you have opened the link, take a look at the screenshot "GitHub Help.PNG" that I have uploaded to the repository to give you a visual reference for the following step:
+First, if you have not created a GitHub account then I highly recommend you do so. Once you have made an account, star the repository linked above so that we can all have the same
+ repository to push/pull our code from.
+
+Next, go to the green "code" tab and download the GitHub Desktop application as well as the zip folder containing everything in the repository.
+
+This GitHub Desktop application will allow you to pull/push any updated information from the repository on the GitHub website with your downloaded repository file on your hardrive
+ (zip file) and vice versa.
+However, make sure that the location of the file you unzip is set as the correct directory for communication on the desktop application.
+ (you will know it is setup correctly when you make changes to the code on your computer and the GitHub Desktop Application will have a "commit changes" button in the bottom left
+ that is highlighted and will update the online repository with the changes you have made)
+
+Usually the directory for your download of the repository will be located inside of c:/Users/your_name/Documents/GitHub and then you can move it to where it is more convenient if you want, 
+ but you will have to redirect your GitHub Desktop Application to wherever you moved the file folder next time you use the application.
+
+If there are any complications or we find a slightly better way of keeping these files up to date for everyone automatically, then we will discuss it as it arises.
+
+Thank you everyone!
