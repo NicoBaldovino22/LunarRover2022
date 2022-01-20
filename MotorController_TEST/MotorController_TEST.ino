@@ -9,7 +9,7 @@ void setup() {
   pinMode(Rev, INPUT);
   pinMode(PWM, OUTPUT);
 
-  digitalWrite(For, HIGH);    //sets initial direction condition
+  digitalWrite(For, LOW);    //sets initial direction condition
   digitalWrite(Rev, LOW);
   
 }

@@ -8,10 +8,17 @@ PS2X ps2x; // create PS2 Controller Class
 int error = 0; 
 byte type = 0;
 byte vibrate = 0;
+const int ledYel = 3;
+const int ledRed = 5;
+const int ledBlu = 6;
+const int ledGrn = 9;
 
 void setup(){
  Serial.begin(57600);
- 
+ pinMode(ledYel,OUTPUT);
+ pinMode(ledRed,OUTPUT);
+ pinMode(ledBlu,OUTPUT);
+ pinMode(ledGrn,OUTPUT);
  //CHANGES for v1.6 HERE!!! **************PAY ATTENTION*************
   
  error = ps2x.config_gamepad(13,11,10,12, false, false);   //setup pins and settings:  GamePad(clock, command, attention, data, Pressures?, Rumble?) check for error
@@ -92,21 +99,60 @@ void loop() {
          Serial.println("L2 pressed");
         if(ps2x.Button(PSB_R2))
          Serial.println("R2 pressed");
-        if(ps2x.Button(PSB_GREEN))
-         Serial.println("Triangle pressed");
          
     }   
          
     
     if(ps2x.ButtonPressed(PSB_RED))             //will be TRUE if button was JUST pressed
+         {
          Serial.println("Circle just pressed");
+         digitalWrite(ledRed, HIGH);
+         }
+         
+    if(ps2x.ButtonReleased(PSB_RED))             //will be TRUE if button was JUST released
+         {
+         Serial.println("Circle just released");
+         digitalWrite(ledRed,LOW);
+         }        
+         
+    if(ps2x.ButtonPressed(PSB_PINK))             //will be TRUE if button was JUST pressed
+         {
+         Serial.println("Square just pressed");
+         digitalWrite(ledYel, HIGH);
+         }
          
     if(ps2x.ButtonReleased(PSB_PINK))             //will be TRUE if button was JUST released
-         Serial.println("Square just released");     
+         {
+         Serial.println("Square just released");
+         digitalWrite(ledYel,LOW);
+         }
+
     
-    if(ps2x.NewButtonState(PSB_BLUE))            //will be TRUE if button was JUST pressed OR released
-         Serial.println("X just changed");    
-    
+    if(ps2x.ButtonPressed(PSB_BLUE))             //will be TRUE if button was JUST pressed
+         {
+         Serial.println("Cross just pressed");
+         digitalWrite(ledBlu, HIGH);
+         }
+         
+    if(ps2x.ButtonReleased(PSB_BLUE))             //will be TRUE if button was JUST released
+         {
+         Serial.println("Cross just released");
+         digitalWrite(ledBlu,LOW);
+         }
+
+        
+    if(ps2x.ButtonPressed(PSB_GREEN))             //will be TRUE if button was JUST pressed
+         {
+         Serial.println("Triangle just pressed");
+         digitalWrite(ledGrn, HIGH);
+         }
+         
+    if(ps2x.ButtonReleased(PSB_GREEN))             //will be TRUE if button was JUST released
+         {
+         Serial.println("Triangle just released");
+         digitalWrite(ledGrn,LOW);
+         }
+
     
     if(ps2x.Button(PSB_L1) || ps2x.Button(PSB_R1)) // print stick values if either is TRUE
     {

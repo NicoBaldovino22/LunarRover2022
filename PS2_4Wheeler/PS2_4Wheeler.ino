@@ -49,13 +49,16 @@ byte type;
 byte vibrate;
 
 
-const int MFLF = 9; //Front Left Forward
-const int MFLR = 6; //Front Left Reverse
-//const int MFLP; //Front Left Power
-
-const int MFRF = 5; //Front Right Forward
+const int MFRF = 2; //Front Right Forward
 const int MFRR = 3; //Front Right Reverse
-//const int MFRP; //Front Right Power
+const int MFRP = 4; //Front Right Power
+
+const int MFLF = 5; //Front Left Forward
+const int MFLR = 6; //Front Left Reverse
+const int MFLP = 7; //Front Left Power
+
+const int  PSPow = 9; //Power to PS2 Reciver
+
 
 //const int MBLF; //Back Left Forward
 //const int MBLR; //Back Left Reverse
@@ -71,15 +74,15 @@ const double DeadZ = .05;   //sets deadzone, percentage of of the entire joystic
 
 
 void setup(){
- Serial.begin(9600);
+ Serial.begin(57600);
  
  pinMode(MFLF,INPUT);   //Defining pins
  pinMode(MFLR,INPUT);
- //pinMode(MFLP,OUTPUT);
+ pinMode(MFLP,OUTPUT);
 
  pinMode(MFRF,INPUT);
  pinMode(MFRR,INPUT);
- //pinMode(MFRP,OUTPUT);
+ pinMode(MFRP,OUTPUT);
 
  //pinMode(MBLF,INPUT);
  //pinMode(MBLR,INPUT);
@@ -90,10 +93,10 @@ void setup(){
 // pinMode(MBRP,OUTPUT);
 
 
- digitalWrite(MFLF,HIGH);   //setting initial conditions for motor directs
+ digitalWrite(MFLF,LOW);   //setting initial conditions for motor directs
  digitalWrite(MFLR,LOW);
 
- digitalWrite(MFRF,HIGH);
+ digitalWrite(MFRF,LOW);
  digitalWrite(MFRR,LOW);
 
  //digitalWrite(MBLF,HIGH);
@@ -110,8 +113,8 @@ void setup(){
  if(error == 0){
    Serial.println("Found Controller, configured successful");
    Serial.println("Try out all the buttons, X will vibrate the controller, faster as you press harder;");
-   Serial.println("holding L1 or R1 will print out the analog stick values.");
-   Serial.println("Go to www.billporter.info for updates and to report bugs.");
+  Serial.println("holding L1 or R1 will print out the analog stick values.");
+  Serial.println("Go to www.billporter.info for updates and to report bugs.");
  }
    
   else if(error == 1)
@@ -123,18 +126,18 @@ void setup(){
   else if(error == 3)
    Serial.println("Controller refusing to enter Pressures mode, may not support it. ");
    
-   Serial.println(ps2x.Analog(1), HEX);
+   //Serial.print(ps2x.Analog(1), HEX);
    
    type = ps2x.readType(); 
      switch(type) {
        case 0:
-        //Serial.println("Unknown Controller type");
+        Serial.println("Unknown Controller type");
        break;
        case 1:
-        //Serial.println("DualShock Controller Found");
+        Serial.println("DualShock Controller Found");
        break;
        case 2:
-         //Serial.println("GuitarHero Controller Found");
+         Serial.println("GuitarHero Controller Found");
        break;
      }
   
@@ -160,19 +163,20 @@ void loop() {
   double LYout;
   double Lout;    // Left and Right Side Final Output
   double Rout;
+  double LPow;    // Left and Right Side Power (0 to 255)
+  double RPow;    
 
     ps2x.read_gamepad(false, vibrate);    //necessary to read ps2 controller
 
     
     LXin = ps2x.Analog(PSS_LX);   //Reads the input from the left joystick
     LYin = ps2x.Analog(PSS_LY);   // 0 - 256
-
     
-      Serial.print("Input: ");      //NOT NECESSARY, wrote to help with debugging
-      Serial.print(LXin, 0);
-      Serial.print(", ");
-      Serial.println(LYin, 0);      //END NOT NECESSARY
- 
+    Serial.print("Input: ");      //NOT NECESSARY, wrote to help with debugging
+    Serial.print(LXin, 0);
+    Serial.print(", ");
+    Serial.println(LYin, 0);      //END NOT NECESSARY
+
     LYin = 256-LYin;    //Original Code was under assumption that Y was 256 at top position, not 0
                           //so this reverses the Y input to match my assumption
                             //4 Wheeler Controls Excel Sheet: (Input -> Mod. Input)
@@ -222,10 +226,30 @@ void loop() {
       }
     }
     }
-    Serial.println("Output: ");   //NOT NECESSARY, wrote to help with debugging
-    Serial.println(Lout, 1);
-    Serial.println(", ");
+    Serial.print("Output: ");   //NOT NECESSARY, wrote to help with debugging
+    Serial.print(Lout, 1);
+    Serial.print(", ");
     Serial.println(Rout, 1);    //END NOT NECESSARY
+
+    LPow = abs(Lout-128)+127; //Calculates Power from L/Rout (motors start spinning at ~50% power
+    RPow = abs(Rout-128)+127;
+    
+    Serial.print("Power: ");   //NOT NECESSARY, wrote to help with debugging
+    Serial.print(LPow, 1);
+    Serial.print(", ");
+    Serial.println(RPow, 1);  //END NOT NECESSARY
+
+    if(LPow == 127){
+      LPow = 0;
+    }
+    if(RPow == 127){
+      RPow = 0;
+    }
+    
+    Serial.print("Power: ");   //NOT NECESSARY, wrote to help with debugging
+    Serial.print(LPow, 1);
+    Serial.print(", ");
+    Serial.println(RPow, 1);  //END NOT NECESSARY
   
     if(Lout > 128)              //Sets outputs based on L/Rout
     {                             //Power can be set based on value of L/Rout
@@ -258,7 +282,8 @@ void loop() {
       digitalWrite(MFRF,LOW);
       digitalWrite(MFRR,HIGH);
     }
- 
+    analogWrite(MFLP,LPow);
+    analogWrite(MFRP,RPow);
  
  }  
  delay(50);
