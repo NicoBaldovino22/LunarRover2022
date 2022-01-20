@@ -4,16 +4,16 @@ Servo servo2;
 int x_key = A1;                                               
 int y_key = A0;                                               
 int x_pos;
-int y_pos;
+int y_pos; 
 int servo1_pin = 3;
-int servo2_pin = 5;  
+int servo2_pin = 5;   
 int initial_position = 90;
 int initial_position1 = 90;
 
 void setup ( ) {
 Serial.begin (9600) ;
-servo1.attach (servo1_pin ) ; 
-servo2.attach (servo2_pin ) ; 
+servo1.attach (servo1_pin);
+servo2.attach (servo2_pin);
 servo1.write (initial_position);
 servo2.write (initial_position1);
 pinMode (x_key, INPUT) ;                     
@@ -38,7 +38,7 @@ delay (100) ;
 
 if (y_pos < 300){
 if (initial_position1 < 10) { } else{ initial_position1 = initial_position1 - 20; servo2.write ( initial_position1 ) ; delay (100) ; } } if (y_pos > 700){
-if (initial_position1 > 180)
+if (initial_position1 > 360)
 {  
 }        
 else{

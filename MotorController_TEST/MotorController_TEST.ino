@@ -1,5 +1,5 @@
-const int For = 8;
-const int Rev = 9;
+const int For = 3;
+const int Rev = 5;
 const int PWM = 13;
 
 void setup() {
