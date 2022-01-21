@@ -3,10 +3,10 @@ Hello 2021-22 Lunar Rover Team!
 This document is meant as a guide for setting up GitHub on your own laptop and connecting the repository correctly so that all of our code is easily up to date.
 If you have not used GitHub before, it is a website that allows you to store and share coding files (or other files if need be) into a single repository that you can connect
  to a downloaded file folder on your device. This repository and file folder can be updated to match each others contents by pulling/pushing the updated information/code 
- using the GitHub Desktop Application that you can download from this repository link as well. I will guide you through the downloading process now:
+  using the GitHub Desktop Application that you can download from this repository link as well. I will guide you through the downloading process now:
 
 The following link will take you to the GitHub website where I have created the repository for all of our code:
-https://github.com/NicoBaldovino22/LunarRover2022
+ https://github.com/NicoBaldovino22/LunarRover2022
 
 Once you have opened the link, take a look at the screenshot "GitHub Help.PNG" that I have uploaded to the repository to give you a visual reference for the following step:
 First, if you have not created a GitHub account then I highly recommend you do so. Once you have made an account, star the repository linked above so that we can all have 
