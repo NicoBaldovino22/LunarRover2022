@@ -1,6 +1,8 @@
 # LunarRover2022
 
-Repository for Arduino code made by the Lunar Rover Team at Oregon Tech in Klamath Falls
+Hello Lunar Rover Team of OIT!
+
+This is the repository for our Arduino code so that we can share up to date scripts.
 
 Please upload short descriptions of what you have changed or added to this repository
  so that we can keep everything documented and organized. Thanks!
