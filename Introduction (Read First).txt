@@ -25,7 +25,7 @@ However, make sure that the location of the file you unzip is set as the correct
 Usually the directory for your download of the repository will be located inside of "C:/Users/your_name/Documents/GitHub" and then you can move it to where it is more
  convenient if you want, but you will have to redirect your GitHub Desktop Application to wherever you moved the file folder next time you use the application.
 
-If there are any complications or we find a slightly better way of keeping these files up to date for everyone automatically, then we will discuss it as it arises.
+If there are any complications or we find a slightly better way of keeping these files up to date for everyone automatically, then we will discuss it as a team as it arises.
 
 Thank you everyone!
 
