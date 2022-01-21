@@ -1,3 +1,4 @@
+
 Hello 2021-22 Lunar Rover Team!
 
 This document is meant as a guide for setting up GitHub on your own laptop and connecting the repository correctly so that all of our code is easily up to date.
@@ -27,3 +28,4 @@ Usually the directory for your download of the repository will be located inside
 If there are any complications or we find a slightly better way of keeping these files up to date for everyone automatically, then we will discuss it as it arises.
 
 Thank you everyone!
+
