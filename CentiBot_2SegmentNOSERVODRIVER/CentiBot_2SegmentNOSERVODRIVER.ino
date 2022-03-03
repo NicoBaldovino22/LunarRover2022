@@ -15,7 +15,7 @@ int Lservopos;
 int Rservopos;
 const int ServoRate = 20;
 const int ServoMin = 0;
-const int ServoMax = 180;
+const int ServoMax = 270;
 const int MaxServoF = 2500;
 const int MinServoF = 500;
 
@@ -88,11 +88,17 @@ void loop() {
   Serial.print(", ");
   Serial.println(Rservopos);
 
-  Lservopos = map(Lservopos,0,180,MinServoF,MaxServoF);
-  Rservopos = map(Rservopos,0,180,MinServoF,MaxServoF);
+  Rservopos = abs(Rservopos-180);
+
+  Rservopos = Rservopos+45;
+  Lservopos = Lservopos+45;
+  
+  Lservopos = map(Lservopos,0,270,MinServoF,MaxServoF);
+  Rservopos = map(Rservopos,0,270,MinServoF,MaxServoF);
+
     
   LServo.writeMicroseconds(Lservopos);
   RServo.writeMicroseconds(Rservopos);
 
-  delay(200);
+  delay(1|0);
 }
