@@ -1,38 +1,59 @@
 /*
- * How to configure and pair two HC-05 Bluetooth Modules
- * by Dejan Nedelkovski, www.HowToMechatronics.com
- * 
- *                 == MASTER CODE ==
- */
+   How to configure and pair two HC-05 Bluetooth Modules
+   by Dejan Nedelkovski, www.HowToMechatronics.com
 
-#define ledPin 9
+                   == MASTER CODE ==
+*/
+
+#define ledPin 8
+#define TxOut 7
+#define RxIn 6
+#include <SoftwareSerial.h>
+SoftwareSerial mySerial(6,7); // RX / TX
 
 int state = 0;
 int potValue = 0;
 
-void setup() {
+void setup() 
+{
   pinMode(ledPin, OUTPUT);
   digitalWrite(ledPin, LOW);
   Serial.begin(38400); // Default communication rate of the Bluetooth module
+  Serial.println("Arduino Ready with HC-05 Master");
+  mySerial.begin(38400);
+  Serial.println("BTserial started at 38400");  
 }
 
-void loop() {
- if(Serial.available() > 0){ // Checks whether data is comming from the serial port
-    state = Serial.read(); // Reads the data from the serial port
- }
- // Controlling the LED
- if (state == '1') {
-  digitalWrite(ledPin, HIGH); // LED ON
-  state = 0;
- }
- else if (state == '0') {
-  digitalWrite(ledPin, LOW); // LED OFF
-  state = 0;
- }
- // Reading the potentiometer
- potValue = analogRead(A0);
- int potValueMapped = map(potValue, 0, 1023, 0, 255);
- Serial.write(potValueMapped); // Sends potValue to servo motor
- delay(10);
- 
+void loop() 
+{
+  if (mySerial.available())
+  {
+    state = mySerial.read();
+    Serial.write(mySerial.read()); // Reads the data from the BT and writes to Serial 
+  }
+    
+  //Serial.println(state);
+
+  // Controlling the LED
+  if (state == '1') 
+  {
+    digitalWrite(ledPin, HIGH); // LED ON
+    state = 0;
+  }
+  if (state == '0') 
+  {
+    digitalWrite(ledPin, LOW); // LED OFF
+    state = 0;
+  }
+  
+  // Reading the potentiometer
+  potValue = analogRead(A1);
+  int potValueMapped = map(potValue, 0, 1023, 0, 255);
+  mySerial.write(potValueMapped); // Sends potValue to servo motor
+
+  Serial.print("Pot Values: ");
+  Serial.println(potValueMapped,1);
+  Serial.print("BT Command: ");
+  Serial.println(state,1);
+  delay(10);
 }

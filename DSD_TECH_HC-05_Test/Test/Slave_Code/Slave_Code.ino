@@ -7,31 +7,41 @@
  
 #include <Servo.h>
 #define button 8
+#define TxOut 7
+#define RxIn 6
+#include <SoftwareSerial.h>
+SoftwareSerial BTSerial(RxIn, TxOut);
 
-Servo myServo;
-int state = 20;
+Servo S1;
+int state = 0;
 int buttonState = 0;
 
 void setup() {
   pinMode(button, INPUT);
-  myServo.attach(9);
+  S1.attach(9);
   Serial.begin(38400); // Default communication rate of the Bluetooth module
+  Serial.println("Arduino Ready with HC-05 Slave");
+  BTSerial.begin(38400);
+  Serial.println("BTserial started at 38400");  
 }
 
-void loop() {
- if(Serial.available() > 0){ // Checks whether data is comming from the serial port
-    state = Serial.read(); // Reads the data from the serial port
+void loop() 
+{
+ if (BTSerial.available())
+ {
+    state = BTSerial.read(); // Reads the data from the BT and writes to Serial
+    Serial.write(state);
  }
+ //Serial.println(state);
+ 
  // Controlling the servo motor
- myServo.write(state);
- delay(10);
+ S1.write(state);
  
  // Reading the button
  buttonState = digitalRead(button);
- if (buttonState == HIGH) {
-   Serial.write('1'); // Sends '1' to the master to turn on LED
- }
- else {
-   Serial.write('0');
- }  
+ Serial.print("BT Command: ");
+ Serial.println(state);
+ Serial.print("Butt State: ");
+ Serial.println(buttonState);
+ delay(10);
 }
