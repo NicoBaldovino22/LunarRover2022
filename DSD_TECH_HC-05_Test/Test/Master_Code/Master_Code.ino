@@ -6,10 +6,8 @@
 */
 
 #define ledPin 8
-#define TxOut 7
-#define RxIn 6
-#include <SoftwareSerial.h>
-SoftwareSerial mySerial(6,7); // RX / TX
+#include <SoftwareSerial.h> // RX / TX
+SoftwareSerial mySerial(10,11);
 
 int state = 0;
 int potValue = 0;
@@ -29,9 +27,9 @@ void loop()
   if (mySerial.available())
   {
     state = mySerial.read();
-    Serial.write(mySerial.read()); // Reads the data from the BT and writes to Serial 
+    ; // Reads the data from the BT and writes to Serial 
   }
-    
+   
   //Serial.println(state);
 
   // Controlling the LED
