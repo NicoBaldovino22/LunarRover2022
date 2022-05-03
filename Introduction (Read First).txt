@@ -10,8 +10,9 @@ The following link will take you to the GitHub website where I have created the 
  https://github.com/NicoBaldovino22/LunarRover2022
 
 Once you have opened the link, take a look at the screenshot "GitHub Help.PNG" that I have uploaded to the repository to give you a visual reference for the following step:
+
 First, if you have not created a GitHub account then I highly recommend you do so. Once you have made an account, star the repository linked above so that we can all have 
- the same repository to push/pull our code from. Please try NOT to "fork" this repository, as it makes sharing accurate code with each other a little messy. Let Nico know 
+ the same repository to push/pull our code from. Please try NOT to "fork" this repository, as it makes sharing accurate code with each other a little messy. Let Nico know (Nico.Baldovino28@gmail.com) 
   what your profile name is and he will invite you to become a contributor to the main repository so you can edit and upload.
 
 Next, go to the green "code" tab and download the GitHub Desktop Application as well as the zip folder containing everything in the repository.
