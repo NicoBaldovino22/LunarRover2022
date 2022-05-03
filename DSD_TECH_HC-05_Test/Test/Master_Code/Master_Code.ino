@@ -7,7 +7,7 @@
 
 #define ledPin 8
 #include <SoftwareSerial.h> // RX / TX
-SoftwareSerial mySerial(10,11);
+SoftwareSerial mySerial(11,12);
 
 int state = 0;
 int potValue = 0;
@@ -45,7 +45,7 @@ void loop()
   }
   
   // Reading the potentiometer
-  potValue = analogRead(A1);
+  potValue = analogRead(A0);
   int potValueMapped = map(potValue, 0, 1023, 0, 255);
   mySerial.write(potValueMapped); // Sends potValue to servo motor
 
