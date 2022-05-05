@@ -9,6 +9,7 @@
 //Knee Servos have their mid point of their range parallel to the thigh.
 
 #include <Servo.h>
+const int Delay = 3000;
 
 //Inputs
  //
@@ -47,13 +48,14 @@
 
 void setup() {
   // put your setup code here, to run once:
+  Serial.begin(9600);
   TFRH.attach(11);
   TFRK.attach(10);
   BFRH.attach(9);
-  BFRK.attach(6);
+  BFRK.attach(5);
   
   TFRH.writeMicroseconds(map(ServoMid+45,ServoMin,ServoMax,MinServoF,MaxServoF));
-  TFRK.writeMicroseconds(map(ServoMid-45,ServoMin,ServoMax,MinServoF,MaxServoF));
+  TFRK.writeMicroseconds(map(ServoMid+45,ServoMin,ServoMax,MinServoF,MaxServoF));
   BFRH.writeMicroseconds(map(ServoMid,ServoMin,ServoMax,MinServoF,MaxServoF));
   BFRK.writeMicroseconds(map(ServoMid,ServoMin,ServoMax,MinServoF,MaxServoF));
 
@@ -62,29 +64,33 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   //Step 1
+  Serial.println("Step 1 Start");
   int NewDeg = map(ServoMid-45,ServoMin,ServoMax,MinServoF,MaxServoF);
   TFRH.writeMicroseconds(NewDeg);
   BFRK.writeMicroseconds(NewDeg);
-  NewDeg = map(ServoMid+45,ServoMin,ServoMax,MinServoF,MaxServoF);
+  NewDeg = map(ServoMid-45,ServoMin,ServoMax,MinServoF,MaxServoF);
   TFRK.writeMicroseconds(NewDeg);
   BFRH.writeMicroseconds(NewDeg);
-  delay(100);
+  //delay(Delay/2);
   NewDeg = map(ServoMid,ServoMin,ServoMax,MinServoF,MaxServoF);
   BFRK.writeMicroseconds(NewDeg);
   BFRH.writeMicroseconds(NewDeg);
-  delay(500);  
+  delay(Delay);  
   //Step 2
-  NewDeg = map(ServoMid-60,ServoMin,ServoMax,MinServoF,MaxServoF);
+  Serial.println("Step 2 Start");
+  NewDeg = map(ServoMid-120,ServoMin,ServoMax,MinServoF,MaxServoF);
   TFRH.writeMicroseconds(NewDeg);
-  NewDeg = map(ServoMid+60,ServoMin,ServoMax,MinServoF,MaxServoF);
+  NewDeg = map(ServoMid-120,ServoMin,ServoMax,MinServoF,MaxServoF);
   TFRK.writeMicroseconds(NewDeg);
-  delay(500);
+  delay(Delay);
   //Step 3
+  Serial.println("Step 3 Start");
   NewDeg = map(ServoMid+45,ServoMin,ServoMax,MinServoF,MaxServoF);
   TFRH.writeMicroseconds(NewDeg);
-  NewDeg = map(ServoMid-45,ServoMin,ServoMax,MinServoF,MaxServoF);
+  delay(Delay/2);
+  NewDeg = map(ServoMid+45,ServoMin,ServoMax,MinServoF,MaxServoF);
   TFRK.writeMicroseconds(NewDeg);
-  delay(500);
+  delay(Delay);
 
   
 //  THStep1(TFRH,TFLH,TBRH,TBLH);
