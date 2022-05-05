@@ -1,78 +1,79 @@
-#include <Adafruit_PWMServoDriver.h>
-#include <Wire.h>
-#include <Servo.h>
+#include <Adafruit_PWMServoDriver.h>  //For usage with PCA9685 (Servo Control)
+#include <Wire.h>   //For usage with PCA9685 (Servo Control)
+#include <Servo.h>  //For direct control of servos (waist as of 5/4/22)
 
-Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
+Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();    //For usage with PCA9685 (Servo Control)
 
-#define SERVOMIN 500
-#define SERVOMAX 2500
-#define USMIN 2000
-#define USMAX 10000
-#define SERVO_FREQ 50
+#define SERVOMIN 500    //For usage with PCA9685 (Servo Control)
+#define SERVOMAX 2500   //For usage with PCA9685 (Servo Control)
+#define USMIN 2000      //For usage with PCA9685 (Servo Control)
+#define USMAX 10000     //For usage with PCA9685 (Servo Control)
+#define SERVO_FREQ 50   //For usage with PCA9685 (Servo Control)
 
-bool FIRST = true;
+bool FIRST = true;    //Used for defining previous servo positions for smoothing function for the first iteration of the step function
 
-Servo Waist;
-const int WaistPin = 3;
+Servo Waist;    //Defines "Waist" as servo using <Servo.h>
+const int WaistPin = 3;   //Defines Waist Pin
 
-uint8_t SFL = 0;
-uint8_t SFR = 1;
+uint8_t SFL = 0;    //Shoulder, Front/Back, Left/Right
+uint8_t SFR = 1;    //Defines servo for control with PCA9685
 uint8_t SBL = 2;
 uint8_t SBR = 3;
 
-uint8_t EFL = 4;
-uint8_t EFR = 5;
+uint8_t EFL = 4;    //Elbow, Front/Back, Left/Right
+uint8_t EFR = 5;    //Defines servo for control with PCA9685
 uint8_t EBL = 6;
 uint8_t EBR = 7;
 
-uint8_t HFL = 8;
-uint8_t HFR = 9;
+uint8_t HFL = 8;    //Hip, Front/Back, Left/Right
+uint8_t HFR = 9;    //Defines servo for control with PCA9685
 uint8_t HBL = 10;
 uint8_t HBR = 11;
 
-uint8_t KFL = 12;
-uint8_t KFR = 13;
+uint8_t KFL = 12;   //Knee, Front/Back, Left/Right
+uint8_t KFR = 13;   //Defines servo for control with PCA9685
 uint8_t KBL = 14;
 uint8_t KBR = 15;
 
-int SFLOff = 0;
+int SFLOff = 0;     //Defines Offset to be used in Leg/Arm Functions
 int SFROff = -7;
 int SBLOff = -5;
 int SBROff = -2;
 
-int EFLOff = 0;
+int EFLOff = 0;     //Defines Offset to be used in Leg/Arm Functions
 int EFROff = -5;
 int EBLOff = +5;
 int EBROff = 0;
 
-int HFLOff = 0;
+int HFLOff = 0;     //Defines Offset to be used in Leg/Arm Functions
 int HFROff = 0;
 int HBLOff = 0;
 int HBROff = 0;
 
-int KFLOff = 0;
+int KFLOff = 0;     //Defines Offset to be used in Leg/Arm Functions
 int KFROff = -5;
 int KBLOff = +7;
 int KBROff = 0;
 
-int ps, pe, ph, pk;
+int ps, pe, ph, pk;   //Intiates previous Shoulder, Elbow, Hip, and Knee servo angle for use in smoothing function
 
-double AttackMin = .05;
+double AttackMin = .05;   //Defines Attack min and max for usage in Smoothing Function
 double AttackMax = .15;
 
-const int TurnRange = 20;
+const int TurnRange = 20;   //Defines Turning Range (degrees) to be used in Turning Function
 
 
-const int ServoAngleMin = 0;
+const int ServoAngleMin = 0;    //Defines Servo Angle Info (degrees)
 const int ServoAngleMax = 270;
 const int ServoAngleMid = (ServoAngleMin + ServoAngleMax) / 2;
-const int DELAY = 100;
 
-const int JoystickMin = 0;
+const int JoystickMin = 0;      //Defines Joystick input info
 const int JoystickMax = 1023;
 const int JoystickMid = (JoystickMin + JoystickMax) / 2;
+const int XJoyPin = A0;   //Defines X Axis of Joystick Pin
+const int YJoyPin = A1;   //Defines Y Axis of Joystick Pin
 
-const double DeadZonePercentage = .10;
+const double DeadZonePercentage = .10;    //Defines percentage that reads as neutral in DeadZone Function (about dead center of joystick)
 
 
 void setup() {
@@ -83,13 +84,12 @@ void setup() {
   Waist.attach(WaistPin);
   Waist.writeMicroseconds(map(ServoAngleMid, ServoAngleMin, ServoAngleMax, SERVOMIN, SERVOMAX));
 
-  pwm.begin();
-  pwm.setOscillatorFrequency(27000000);
-  pwm.setPWMFreq(SERVO_FREQ);
+  pwm.begin();                          //For usage with PCA9685 (Servo Control)
+  pwm.setOscillatorFrequency(27000000); //For usage with PCA9685 (Servo Control)
+  pwm.setPWMFreq(SERVO_FREQ);           //For usage with PCA9685 (Servo Control)
 
-  delay(DELAY);
-  //Power for joystick
-  pinMode(A0, INPUT);
+  pinMode(XJoyPin, INPUT);
+  pinMode(YJoyPin, INPUT);
 
   //Step(0,0,0,0,0);
   Step(+25, -45, -45, +85, 0);
@@ -98,13 +98,13 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  int XJoy = analogRead(A0);
-  int YJoy = analogRead(A1);
+  int XJoy = analogRead(XJoyPin);
+  int YJoy = analogRead(YJoyPin);
 
   XJoy = DeadZone(XJoy, DeadZonePercentage, JoystickMid);
   YJoy = DeadZone(YJoy, DeadZonePercentage, JoystickMid);
 
   if (YJoy <= JoystickMid) {
-    walk(XJoy, YJoy);
+    walk();
   }
 }
