@@ -4,6 +4,7 @@ import time
 import collections
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+import numpy as np
 import struct
 import pandas as pd
 
@@ -21,7 +22,7 @@ class serialPlot:
         self.thread = None
         self.plotTimer = 0
         self.previousTimer = 0
-        # self.csvData = []
+        self.csvData = [self.rawData]
 
         print('Trying to connect to: ' + str(serialPort) + ' at ' + str(serialBaud) + ' BAUD.')
         try:
@@ -47,7 +48,7 @@ class serialPlot:
         self.data.append(value)    # we get the latest data point and append it to our array
         lines.set_data(range(self.plotMaxLength), self.data)
         lineValueText.set_text('[' + lineLabel + '] = ' + str(value))
-        # self.csvData.append(self.data[-1])
+        #self.csvData.append(self.data[-1])
 
     def backgroundThread(self):    # retrieve data
         time.sleep(1.0)  # give some buffer time for retrieving data
@@ -62,10 +63,10 @@ class serialPlot:
         self.thread.join()
         self.serialConnection.close()
         print('Disconnected...')
-        # df = pd.DataFrame(self.csvData)
-        # df.to_csv('/home/rikisenia/Desktop/data.csv')
+        #df = pd.DataFrame(self.csvData)
+        #df.save('C:/Users/Nico/Downloads/data.csv')
 
-
+# Generating the plot function main()
 def main():
     portName = 'COM1'     # for windows users
     # portName = '/dev/ttyUSB0'
@@ -73,14 +74,15 @@ def main():
     maxPlotLength = 100
     dataNumBytes = 4        # number of bytes of 1 data point
     s = serialPlot(portName, baudRate, maxPlotLength, dataNumBytes)   # initializes all required variables
-    s.readSerialStart()                                               # starts background thread
+    s.readSerialStart()                                            # starts background thread
+
 
     # plotting starts below
     pltInterval = 50    # Period at which the plot animation updates [ms]
     xmin = 0
     xmax = maxPlotLength
-    ymin = -(1)
-    ymax = 1
+    ymin = -(1000)
+    ymax = 1000
     fig = plt.figure()
     ax = plt.axes(xlim=(xmin, xmax), ylim=(float(ymin - (ymax - ymin) / 10), float(ymax + (ymax - ymin) / 10)))
     ax.set_title('Arduino Analog Read')
@@ -92,12 +94,12 @@ def main():
     lines = ax.plot([], [], label=lineLabel)[0]
     lineValueText = ax.text(0.50, 0.90, '', transform=ax.transAxes)
     anim = animation.FuncAnimation(fig, s.getSerialData, fargs=(lines, lineValueText, lineLabel, timeText), interval=pltInterval)    # fargs has to be a tuple
+    #anim = plt.plot(x, y)
 
     plt.legend(loc="upper left")
-    plt.show()
+    plt.show(anim)
 
     s.close()
-
 
 if __name__ == '__main__':
     main()

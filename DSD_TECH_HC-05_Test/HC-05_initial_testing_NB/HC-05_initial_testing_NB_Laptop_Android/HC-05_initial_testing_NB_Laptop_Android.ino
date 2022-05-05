@@ -2,7 +2,7 @@
 
 //the following will be code needed to operate one single DSD TECH HC-05 Bluetooth module with an Android phone
 
-#define ledPin 7
+#define ledPin 9
 int state = 0; 
 
 void setup() {
@@ -12,6 +12,7 @@ void setup() {
 }
 
 void loop() {
+  Serial.print(Serial.available());
   if(Serial.available() > 0 ) { // Check whether data is correct or not
     state = Serial.read(); // Reads the data from the serial
   }
