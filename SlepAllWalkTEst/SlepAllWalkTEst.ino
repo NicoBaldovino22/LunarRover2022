@@ -55,7 +55,7 @@ int KFROff = -5;
 int KBLOff = +7;
 int KBROff = 0;
 
-int ps, pe, ph, pk;   //Intiates previous Shoulder, Elbow, Hip, and Knee servo angle for use in smoothing function
+int ps, pe, ph, pk;   //Intiates previous Shoulder, Elbow, Hip, and Knee servo angle for use in step & smoothing function
 
 double AttackMin = .05;   //Defines Attack min and max for usage in Smoothing Function
 double AttackMax = .15;
@@ -75,6 +75,10 @@ const int YJoyPin = A1;   //Defines Y Axis of Joystick Pin
 
 const double DeadZonePercentage = .10;    //Defines percentage that reads as neutral in DeadZone Function (about dead center of joystick)
 
+const int SStep0 = +25;
+const int EStep0 = -45;
+const int HStep0 = -45;
+const int KStep0 = +85;
 
 void setup() {
   // put your setup code here, to run once:
@@ -91,8 +95,8 @@ void setup() {
   pinMode(XJoyPin, INPUT);
   pinMode(YJoyPin, INPUT);
 
-  //Step(0,0,0,0,0);
-  Step(+25, -45, -45, +85, 0);
+  //Step(0,0,0,0);
+  Step(SStep0, EStep0, HStep0, KStep0);
   //delay(5000);
 }
 
@@ -106,5 +110,8 @@ void loop() {
 
   if (YJoy <= JoystickMid) {
     walk();
+    Serial.println();
+    Serial.println("End Walk Cycle");
+    Serial.println();
   }
 }
