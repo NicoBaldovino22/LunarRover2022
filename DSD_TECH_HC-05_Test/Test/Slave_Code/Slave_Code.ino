@@ -6,18 +6,16 @@
  */
  
 #include <Servo.h>
-#define button 8
 #include <SoftwareSerial.h>
 SoftwareSerial BTSerial(10,11);
 
 Servo S1;
 Servo S2;
-int state = 0;
-int buttonState = 0;
+int serv1x, serv1y, serv2x, serv2y;
+int state[6];
 
 void setup() 
 {
-  pinMode(button, INPUT);
   S1.attach(9);
   S2.attach(7);
   Serial.begin(38400); // Default communication rate of the Bluetooth module
@@ -28,20 +26,26 @@ void setup()
 
 void loop() 
 {
- if (BTSerial.available())
+ while (BTSerial.available())
  {
-    state = BTSerial.read(); // Reads the data from the BT and writes to Serial
-    S1.write(state);
-    S2.write(state);
+    state[6] = BTSerial.read();
  }
- //Serial.println(state);
+ //S1.write(state);
+ //S2.write(state);
+ //Serial.println(serv2x);
  
- // Reading the button
- buttonState = digitalRead(button);
- Serial.print("BT Command: ");
- Serial.println(state);
- Serial.print("Butt State: ");
- BTSerial.write(buttonState);
- Serial.println(buttonState);
- delay(10);
+ // Reading the BTSerial()
+ Serial.print("BT State 1: ");
+ Serial.println(state[4]);
+ delay(100);
+ 
+ //Serial.print("Servo 1x: ");
+ //Serial.println(serv1x);
+ //Serial.print("Servo 1y: ");
+ //Serial.println(serv1y);
+ //Serial.print("Servo 2x: ");
+ //Serial.println(serv2x);
+ //Serial.print("Servo 2y: ");
+ //Serial.println(serv2y);
+ //delay(1000);
 }
