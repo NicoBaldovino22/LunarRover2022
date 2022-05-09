@@ -14,6 +14,7 @@ bool FIRST = true;    //Used for defining previous servo positions for smoothing
 
 Servo Waist;    //Defines "Waist" as servo using <Servo.h>
 const int WaistPin = 3;   //Defines Waist Pin
+const int WaistOffset = -5;
 
 uint8_t SFL = 0;    //Shoulder, Front/Back, Left/Right
 uint8_t SFR = 1;    //Defines servo for control with PCA9685
@@ -52,15 +53,15 @@ int HBROff = 0;
 
 int KFLOff = 0;     //Defines Offset to be used in Leg/Arm Functions
 int KFROff = -5;
-int KBLOff = +7;
+int KBLOff = 0;
 int KBROff = 0;
 
-int ps, pe, ph, pk;   //Intiates previous Shoulder, Elbow, Hip, and Knee servo angle for use in step & smoothing function
+double ps, pe, ph, pk;   //Intiates previous Shoulder, Elbow, Hip, and Knee servo angle for use in step & smoothing function
 
-double AttackMin = .05;   //Defines Attack min and max for usage in Smoothing Function
-double AttackMax = .15;
+const float AttackMin = 0.05;   //Defines Attack min and max for usage in Smoothing Function
+const float AttackMax = 0.15;
 
-const int TurnRange = 20;   //Defines Turning Range (degrees) to be used in Turning Function
+const int TurnRange = 25;   //Defines Turning Range (degrees) to be used in Turning Function
 
 
 const int ServoAngleMin = 0;    //Defines Servo Angle Info (degrees)
@@ -72,13 +73,14 @@ const int JoystickMax = 1023;
 const int JoystickMid = (JoystickMin + JoystickMax) / 2;
 const int XJoyPin = A0;   //Defines X Axis of Joystick Pin
 const int YJoyPin = A1;   //Defines Y Axis of Joystick Pin
+const int JoyPower = 13;
 
-const double DeadZonePercentage = .10;    //Defines percentage that reads as neutral in DeadZone Function (about dead center of joystick)
+const double DeadZonePercentage = .20;    //Defines percentage that reads as neutral in DeadZone Function (about dead center of joystick)
 
 const int SStep0 = +25;
 const int EStep0 = -45;
 const int HStep0 = -45;
-const int KStep0 = +85;
+const int KStep0 = +78;
 
 void setup() {
   // put your setup code here, to run once:
@@ -94,6 +96,8 @@ void setup() {
 
   pinMode(XJoyPin, INPUT);
   pinMode(YJoyPin, INPUT);
+  pinMode(JoyPower, OUTPUT);
+  digitalWrite(JoyPower, HIGH);
 
   //Step(0,0,0,0);
   Step(SStep0, EStep0, HStep0, KStep0);
@@ -107,11 +111,23 @@ void loop() {
 
   XJoy = DeadZone(XJoy, DeadZonePercentage, JoystickMid);
   YJoy = DeadZone(YJoy, DeadZonePercentage, JoystickMid);
-
-  if (YJoy <= JoystickMid) {
+  //Serial.println(XJoy);
+  //Serial.println(YJoy);
+  
+  if (XJoy > JoystickMid+JoystickMid/2 || XJoy < JoystickMid-JoystickMid/2) {
+    turn();
+  }
+  if (YJoy > JoystickMid + JoystickMid/2) {
     walk();
     Serial.println();
     Serial.println("End Walk Cycle");
     Serial.println();
   }
+  if (YJoy < JoystickMid - JoystickMid/2) {
+    reverse();
+    Serial.println();
+    Serial.println("End Reverse Cycle");
+    Serial.println();
+  }
+
 }
