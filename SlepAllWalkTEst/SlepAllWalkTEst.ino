@@ -77,8 +77,8 @@ const int JoyPower = 13;
 
 const double DeadZonePercentage = .20;    //Defines percentage that reads as neutral in DeadZone Function (about dead center of joystick)
 
-const int SStep0 = +25;
-const int EStep0 = -45;
+const int SStep0 = +30;
+const int EStep0 = -60;
 const int HStep0 = -45;
 const int KStep0 = +78;
 
@@ -114,16 +114,16 @@ void loop() {
   //Serial.println(XJoy);
   //Serial.println(YJoy);
   
-  if (XJoy > JoystickMid+JoystickMid/2 || XJoy < JoystickMid-JoystickMid/2) {
+  if (XJoy > JoystickMid+JoystickMid/1.5 || XJoy < JoystickMid-JoystickMid/1.5) {
     turn();
   }
-  if (YJoy > JoystickMid + JoystickMid/2) {
+  if (YJoy > JoystickMid + JoystickMid/1.5) {
     walk();
     Serial.println();
     Serial.println("End Walk Cycle");
     Serial.println();
   }
-  if (YJoy < JoystickMid - JoystickMid/2) {
+  if (YJoy < JoystickMid - JoystickMid/1.5) {
     reverse();
     Serial.println();
     Serial.println("End Reverse Cycle");
