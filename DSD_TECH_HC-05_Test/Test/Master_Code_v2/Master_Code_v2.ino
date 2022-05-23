@@ -38,23 +38,30 @@ void loop()
   //Joystick 1 (Right) X
   xJoy1R = analogRead(A1);
   xJoy1 = map(xJoy1R, 0, 1023, 0, 255);
-  if (xJoy1 < 10)
+  if (xJoy1 < 50)
   {
     xJoy1 = 0;
+    mySerial.write(xJoy1);
+    delay(10);
   }
-  else if (xJoy1 > 245)
+  else if (xJoy1 > 220)
   {
     xJoy1 = 255;
+    mySerial.write(xJoy1);
+    delay(10);
   }
   else if (120 < xJoy1 < 135)
   {
     xJoy1 = 125;
+    mySerial.write(xJoy1);
+    delay(10);
   }
   else
   {
     xJoy1 = map(xJoy1R, 0, 1023, 0, 255);
+    mySerial.write(xJoy1);
+    delay(10);
   }
-  mySerial.write(xJoy1);
   
   //Joystick 1 (Right) Y
   yJoy1R = analogRead(A2); 
@@ -62,20 +69,27 @@ void loop()
   if (yJoy1 < 10)
   {
     yJoy1 = 0;
+    mySerial.write(yJoy1);
+    delay(10);
   }
   else if (yJoy1 > 245)
   {
     yJoy1 = 255;
+    mySerial.write(yJoy1);
+    delay(10);
   }
   else if (120 < yJoy1 < 135)
   {
     yJoy1 = 125;
+    mySerial.write(yJoy1);
+    delay(10);
   }
   else
   {
     yJoy1 = map(yJoy1R, 0, 1023, 0, 255);
+    mySerial.write(yJoy1);
+    delay(10);
   }
-  mySerial.write(yJoy1);
   
   //Joystick 2 (Left) X
   xJoy2R = analogRead(A3);
@@ -83,20 +97,27 @@ void loop()
   if (xJoy2 < 10)
   {
     xJoy2 = 0;
+    mySerial.write(xJoy2);
+    delay(10);
   }
   else if (xJoy2 > 245)
   {
     xJoy2 = 255;
+    mySerial.write(xJoy2);
+    delay(10);
   }
   else if (120 < xJoy2 < 135)
   {
     xJoy2 = 125;
+    mySerial.write(xJoy2);
+    delay(10);
   }
   else
   {
     xJoy2 = map(xJoy2R, 0, 1023, 0, 255);
+    mySerial.write(xJoy2);
+    delay(10);
   }
-  mySerial.write(xJoy2);
 
   //Joystick 2 (Left) Y
   yJoy2R = analogRead(A4);
@@ -104,20 +125,27 @@ void loop()
   if (yJoy2 < 10)
   {
     yJoy2 = 0;
+    mySerial.write(yJoy2);
+    delay(10);
   }
   else if (yJoy2 > 245)
   {
     yJoy2 = 255;
+    mySerial.write(yJoy2);
+    delay(10);
   }
   else if (120 < yJoy2 < 135)
   {
     yJoy2 = 125;
+    mySerial.write(yJoy2);
+    delay(10);
   }
   else
   {
     yJoy2 = map(yJoy2R, 0, 1023, 0, 255);
+    mySerial.write(yJoy2);
+    delay(10);
   }
-  mySerial.write(yJoy2);
 
   //Reading and Mapping Push Buttons on Joys
   //L3
@@ -126,11 +154,13 @@ void loop()
   {
     button1 = 1;
     mySerial.write(button1);
+    delay(10);
   }
   else if (button1R < 1)
   {
     button1 = 0;
     mySerial.write(button1);
+    delay(10);
   }
 
   //R3
@@ -139,11 +169,13 @@ void loop()
   {
     button2 = 1;
     mySerial.write(button2);
+    delay(10);
   }
   else if (button2R < 1)
   {
     button2 = 0;
     mySerial.write(button2);
+    delay(10);
   }
   
   //Serial.print("Pot Values: ");
