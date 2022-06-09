@@ -9,17 +9,14 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();    //For usage with PCA
 #define USMAX 10000     //For usage with PCA9685 (Servo Control)
 #define SERVO_FREQ 50   //For usage with PCA9685 (Servo Control)
 
-uint8_t TA = 0;
-uint8_t BA = 1;
-
-uint8_t TB = 2;
-uint8_t BB = 3;
-
-uint8_t TC = 4;
-uint8_t BC = 5;
-
-uint8_t TD = 6;
-uint8_t BD = 7;
+uint8_t ServoA = 0;
+uint8_t ServoB = 1;
+uint8_t ServoC = 2;
+uint8_t ServoD = 3;
+uint8_t ServoE = 4;
+uint8_t ServoF = 5;
+uint8_t ServoG = 6;
+uint8_t ServoH = 7;
 
 const int ServoMinA = 0;
 const int ServoMaxA = 180;
@@ -53,42 +50,22 @@ void loop() {
     int B = (XRange / 2) * sin(Speed * n + Offset);
     int C = (XRange / 2) * sin(Speed * n + Offset * 2);
     int D = (XRange / 2) * sin(Speed * n + Offset * 3);
+    int E = (XRange / 2) * sin(Speed * n + Offset * 4);
+    int F = (XRange / 2) * sin(Speed * n + Offset * 5);
+    int G = (XRange / 2) * sin(Speed * n + Offset * 6);
+    int H = (XRange / 2) * sin(Speed * n + Offset * 7);
 
-    int AY = abs(abs((XRange / 2) - A) - YRange);
-    int BY = abs(abs((XRange / 2) - B) - YRange);
-    int CY = abs(abs((XRange / 2) - C) - YRange);
-    int DY = abs(abs((XRange / 2) - D) - YRange);
-
-    Serial.print("AX: ");
-    Serial.println(A);
-    Serial.print("AY: ");
-    Serial.println(AY);
-
-    pwm.writeMicroseconds(TA, map(ServoMid + AY, ServoMinA, ServoMaxA, SERVOMIN, SERVOMAX));
-    pwm.writeMicroseconds(BA, map(ServoMid + A, ServoMinA, ServoMaxA, SERVOMIN, SERVOMAX));
-
-    pwm.writeMicroseconds(TB, map(ServoMid + BY, ServoMinA, ServoMaxA, SERVOMIN, SERVOMAX));
-    pwm.writeMicroseconds(BB, map(ServoMid + B, ServoMinA, ServoMaxA, SERVOMIN, SERVOMAX));
-
-    pwm.writeMicroseconds(TC, map(ServoMid + CY, ServoMinA, ServoMaxA, SERVOMIN, SERVOMAX));
-    pwm.writeMicroseconds(BC, map(ServoMid + C, ServoMinA, ServoMaxA, SERVOMIN, SERVOMAX));
-
-    pwm.writeMicroseconds(TD, map(ServoMid + DY, ServoMinA, ServoMaxA, SERVOMIN, SERVOMAX));
-    pwm.writeMicroseconds(BD, map(ServoMid + D, ServoMinA, ServoMaxA, SERVOMIN, SERVOMAX));
-
+    pwm.writeMicroseconds(ServoA, map(ServoMid + A, ServoMinA, ServoMaxA, SERVOMIN, SERVOMAX));
+    pwm.writeMicroseconds(ServoB, map(ServoMid + B, ServoMinA, ServoMaxA, SERVOMIN, SERVOMAX));
+    pwm.writeMicroseconds(ServoC, map(ServoMid + C, ServoMinA, ServoMaxA, SERVOMIN, SERVOMAX));
+    pwm.writeMicroseconds(ServoD, map(ServoMid + D, ServoMinA, ServoMaxA, SERVOMIN, SERVOMAX));
+    pwm.writeMicroseconds(ServoE, map(ServoMid + E, ServoMinA, ServoMaxA, SERVOMIN, SERVOMAX));
+    pwm.writeMicroseconds(ServoF, map(ServoMid + F, ServoMinA, ServoMaxA, SERVOMIN, SERVOMAX));
+    pwm.writeMicroseconds(ServoG, map(ServoMid + G, ServoMinA, ServoMaxA, SERVOMIN, SERVOMAX));
+    pwm.writeMicroseconds(ServoH, map(ServoMid + H, ServoMinA, ServoMaxA, SERVOMIN, SERVOMAX));
     n++;
+    
     delay(10);
     Butt = digitalRead(ButtPin);
   }
-  pwm.writeMicroseconds(TA, map(ServoMid, ServoMinA, ServoMaxA, SERVOMIN, SERVOMAX));
-  pwm.writeMicroseconds(BA, map(ServoMid, (ServoMid - (XRange / 2)), (ServoMid + (XRange / 2)), SERVOMIN, SERVOMAX));
-
-  pwm.writeMicroseconds(TB, map(ServoMid, ServoMinA, ServoMaxA, SERVOMIN, SERVOMAX));
-  pwm.writeMicroseconds(BB, map(ServoMid, (ServoMid - (XRange / 2)), (ServoMid + (XRange / 2)), SERVOMIN, SERVOMAX));
-
-  pwm.writeMicroseconds(TC, map(ServoMid, ServoMinA, ServoMaxA, SERVOMIN, SERVOMAX));
-  pwm.writeMicroseconds(BC, map(ServoMid, (ServoMid - (XRange / 2)), (ServoMid + (XRange / 2)), SERVOMIN, SERVOMAX));
-
-  pwm.writeMicroseconds(TD, map(ServoMid, ServoMinA, ServoMaxA, SERVOMIN, SERVOMAX));
-  pwm.writeMicroseconds(BD, map(ServoMid, (ServoMid - (XRange / 2)), (ServoMid + (XRange / 2)), SERVOMIN, SERVOMAX));
 }
